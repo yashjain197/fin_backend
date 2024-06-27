@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            @page{
+                margin: 0px;
+                margin-top: 20px;
+                margin-bottom: 60px;
+            }
+            body{
+                font-size: 10px;
+            }
+            table,
+            th,
+            td {
+                border: 1px solid lightgrey;
+                border-collapse: collapse;
+                padding: 5px;
+                padding-left: 10px;
+            }
+            th {
+                text-align: left;
+                padding-left: 10px;
+            }
+            footer {
+                position: fixed;
+                bottom: -60px;
+                left: 0;
+                width: 100%;
+                padding: 10px;
+                color: white;
+            }
+
+            .trstyle {
+                background-color: #fd6348; 
+                color: white;
+            }
+        </style>
+    </head>
+
+<body>
+    <div style="margin: 30px">
+        <div style="display: flex;  justify-content: center; align-items: center; margin-top: 20px;">
+            
+            {% if  purchaser == 1 %}
+            <img src="https://siab-prod-t.s3.ap-south-1.amazonaws.com/Essential/logo.png" alt="" style="display: inline-block; width: 140px; height: 50px;">
+            {% endif %}
+            {% if  purchaser == 2 %}
+            <img src="https://i.ibb.co/gtYWByL/Clean-Hedge-logo-black.png" alt="" style="display: inline-block; width: 200px; height: 50px;">
+            {% endif %}
+            {% if  purchaser == 3 %}
+            <img src="https://i.ibb.co/swNhjmK/APL-LOGO-FILE-png-01.png" alt="" style="display: inline-block; width: 200px; height: 50px;">
+            {% endif %}
+            {% comment %} <p style="margin: 0 auto; font-size: 27px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; color: #fd6348;">Purchase Order</p> {% endcomment %}
+        </div>
+        <div  style="
+        
+        {% if purchaser == 1 %}
+        background-color: #FFF5EE; padding: 10px; width: 100%;
+        {% elif purchaser == 2 %}
+        background-color: #EBFEF4; padding: 10px; width: 100%;
+        {% elif purchaser == 3 %}
+        background-color: #E1FCF3; padding: 10px; width: 100%;
+        {% endif %}
+        ">
+        
+        <table style="width: 100%; border: 2px solid grey; margin-top: 20px; background-color: white;">
+            <tr>
+                <th colspan = "2" style="text-align: center;">Purchase Order</th>
+            </tr>
+
+            <tr>
+                <td><b>Purchase Order No.: {{purchase_order_no}}</td>
+                <td><b>Date: {{date}}</b></td>
+            </tr>
+
+            
+            {% if revision > 0 %}
+            <tr>
+                <td><b>Revision:</b> {{revision}}</td>
+                <td><b>Contract No. (if applicable): {{contract_number}}</b></td>
+            </tr>
+            {% else %}
+            <tr>
+                <td><b>Contract No. (if applicable): {{contract_number}}</b></td>
+            </tr>
+            {% endif %}
+            
+            {% if is_approved %}
+            <td colspan="2"><b>Approved By - </b> {{approved_by}}</td>
+            {% else %}
+            <td colspan="2"><b>Approval Status - </b>Not apporved</td>
+            {% endif %}
+                   
+          
+
+                <tr style="
+                {% if purchaser == 1  %}
+                background-color: #fd6348; color: white;    
+                {% endif %}
+                {% if purchaser == 2  %}
+                background-color: #459639; color: white;    
+                {% endif %}
+                {% if purchaser == 3  %}
+                background-color: #399b92; color: white;    
+                {% endif %}
+                ">
+                    
+                    <td style="text-align: center;"><b>Purchaser</b></td>
+                    <td style="text-align: center;"><b>Supplier</b></td>
+                </tr>
+            
+            <tr>
+                <td style="width: 50%; vertical-align: top;" colspan="1"><b>Purchaser Name:</b> {{purchaser_name}}
+                    <br> <b>Buyer Address:</b><br>
+                    {{purchaser_address}}
+                    <br>
+                    <b>GSTIN/UIN :</b> {{purchaser_gst}}
+                </td>
+        
+                <td colspan="1" style="vertical-align: top;"><b>Supplier Name:</b> {{supplier_name}}
+                    <br> <b>Registered Address:</b><br>
+                    {{supplier_address}}
+                    <br>
+                    {% if supplier_gst %}
+                    <b>GSTIN/UIN :</b> {{supplier_gst}}
+                    {% endif %}
+                </td>
+            </tr>
+            
+            
+            {% if is_project%}
+                <tr >
+                    <td colspan="2" style="text-align: center; font-weight: bold;">Project Details</td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Customer Name:</b> {{project_name}}
+                    </td>
+                    <td>
+                        <b>Customer GST:</b> {{project_gst}}
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Contact Person Name:</b> {{contact_person_name}}</td>
+                    <td><b>Contact Person Number:</b> {{contact_person_phone}}</td>
+                </tr>
+            {% endif %}
+                
+            {% if  customer_delivery_address is not none %}
+            <tr>
+                <td colspan="2"><b>Delivery Address:</b> {{customer_delivery_address}}</td>
+            </tr>
+            {% endif %}
+
+          
+        </table>
+            
+
+
+        <table style="width: 100%; border: 2px solid grey; margin-top: 20px; background-color: white;">
+            
+            <tr style="
+            {% if purchaser == 1  %}
+            background-color: #fd6348; color: white;    
+            {% endif %}
+            {% if purchaser == 2  %}
+            background-color: #459639; color: white;    
+            {% endif %}
+            {% if purchaser == 3  %}
+            background-color: #399b92; color: white;    
+            {% endif %}
+            ">
+                <th style="width: 5%; text-align: center;">Sr. No.</th>
+                <th style="width: 10%; text-align: center;">Item</th>
+                <th style="width: 30%;  text-align: center;">Description</th>
+                <th style="width: 10%;  text-align: center;">Unit Price(₹)</th>
+                <th style="width: 5%;  text-align: center;">Qty.</th>
+                <th style="width: 10%;  text-align: center;">Sub Total(₹)</th>
+                <th style="width: 10%;  text-align: center;">Tax(%)</th>
+                <th style="width: 10%;  text-align: center;">Total Amount(₹) (incl. tax)</th>
+            </tr>
+            
+        {% for item in item_list %}
+        <tr>
+            <td style="text-align: center;">{{ forloop.counter }}</td>
+            <td>{{ item.item }}</td>
+            <td>
+                {% if item.item_description %}
+                    <ul>
+                        {% for desc in item.item_description %}
+                            {% if desc %}
+                                <li>{{ desc }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+            <td style="text-align: center;"> {{ item.unit_price }}</td>
+            <td style="text-align: center;">
+                {{ item.quantity }}
+                {% if item.unit is not none %}
+                    {{ item.unit }}
+                {% endif %}
+            </td>
+            <td style="text-align: center;">{{ item.sub_total }}</td>
+            <td style="text-align: center;">{{ item.tax }}</td>
+            <td style="background-color: lightgrey; text-align: center; border-bottom:  1px solid white;" >{{ item.total_amount }}</td>
+        </tr>
+    {% endfor %}
+    <tr>
+        <td colspan="5" rowspan="1" style="text-align: center;"><b>Total Amount in words</b></td>
+        <td colspan="2"><b>Subtotal</b></td>
+        <td colspan="1" style="background-color: lightgrey; text-align: center; border-bottom:  1px solid white;"><b>₹{{subtotal}}</b></td>
+    </tr>
+    <tr>
+        <td colspan="5" rowspan="2" style="text-align: center;"> {{total_amount_words}}</td>
+        <td colspan="2"><b>Taxes</b></td>
+        <td colspan="1" style="background-color: lightgrey; text-align: center; border-bottom:  1px solid white;"><b>₹{{tax_amount}}</b></td>
+    </tr>
+    <tr>
+        <td colspan="2"><b>Total Amount</b></td>
+        <td colspan="1" style="background-color: lightgrey; text-align: center; "><b>₹{{total_amount}}</b></td>
+    </tr>
+    
+    <tr>
+        <td colspan="3" style="padding-left: 30px;">
+            
+            {% if not is_project %}
+            <p style="text-align: center; margin-top: 0px;"><b>Contact Details</b></p>     
+                
+            {% endif %}
+            
+            {% if is_project %}
+            <p style="text-align: center; margin-top: 0px;"><b>PO Generated By</b></p>
+            {% endif %}
+                
+            <b>Name:</b> {{made_by}}
+            <br>
+            <b>Email: </b>{{made_by_email}}
+            <br>
+            <b>Contact No.:</b> {{made_by_phone}}
+
+        </td>
+        <td colspan="5" style="vertical-align: bottom; text-align: center;">
+            <br>   
+            <b style="vertical-align: middle;">{{purchaser_name}}</b><br>     
+            <br>
+            <b>Signature/Stamp (if required)</b>
+        </td>
+    </tr>
+    
+    {% if revision_remark is not none %}
+    <tr>
+        <td colspan="8"><b>Revision Remarks: </b> {{revision_remark}}</td>
+    </tr>   
+    {% endif %}
+        
+    <tr>
+        <th colspan="8" style="text-align: center;">Terms & Conditions</th>
+    </tr>
+    <tr>
+        <td colspan="8">
+            {% comment %} <ol style="text-align: justify; margin: 0;">
+                <li><b>Payment Terms:</b> {{ payment_terms }}</li>
+                <li><b>Delivery Terms:</b> {{ delivery_terms }}</li>
+                <li>Our P.O. Number and Item Code must appear against description in your Invoice/Bill and a copy of this P.O. must also be attached with your Invoice/Bill.</li>
+                <li>Material will not be accepted on a challan.</li>
+                <li>Material shipped should not exceed the ordered quantity. Excess quantity will have to be lifted back at your expense from the place of delivery.</li>
+            </ol> {% endcomment %}
+            <ol style="text-align: justify; margin: 0;">
+                <li><b>Payment Terms:</b> {{ payment_terms }}</li>
+                <li><b>Delivery Terms:</b>
+                    <ol>
+                        {% for term in delivery_terms %}
+                            {% if term %}
+                                <li>{{ term }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ol>
+                </li>
+                
+                {% if is_t_and_c %}
+                    
+                    {% for item in teams_and_conditions %}
+                        <li>{{ item }}</li>        
+                    {% endfor %}
+                {% elif not is_t_and_c %}
+                <li>Our P.O. Number and Item Code must appear against description in your Invoice/Bill and a copy of this P.O. must also be attached with your Invoice/Bill.</li>
+                <li>Material will not be accepted on a challan.</li>
+                <li>Material shipped should not exceed the ordered quantity. Excess quantity will have to be lifted back at your expense from the place of delivery.</li>
+                {% endif %}
+                    
+            </ol>
+        </td>
+    </tr>
+    
+        </table>
+    </div>
+    </div>
+    
+    {% if purchaser == 1 %}
+    <footer style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: 17px; padding: 10px; background-color: #fd6348;">
+{% comment %} <p style="display: block; margin: 0; padding: 0;">Division Of : ORNATE AGENCEIS PVT LTD</p> {% endcomment %}
+<div style="display: flex; justify-content: space-between; text-align: center; padding-right: 20px;">
+    <div>Division Of : ORNATE AGENCEIS PVT LTD</div>
+    <div>011-43536666</div>
+</div>
+<div style="display: flex; justify-content: space-between; text-align: center; padding-right: 20px;">
+    <div>A-87, Okhla Industrial Area Phase-2 | New Delhi 110020</div>
+    <div><a href="http://www.ornatesolar.com" style="color: white; text-decoration: none;">www.ornatesolar.com</a></div>
+</div>
+</footer>
+    {% endif %}
+    {% if purchaser == 2 %}
+    <footer style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: 17px; padding: 10px; background-color: #459639;">
+{% comment %} <p style="display: block; margin: 0; padding: 0;">Division Of : ORNATE AGENCEIS PVT LTD</p> {% endcomment %}
+<div style="display: flex; justify-content: space-between; text-align: center; padding-right: 20px;">
+    <div>Division Of : CLEANHEDGE VERDE PVT LTD</div>
+    <div>011-43536666</div>
+</div>
+<div style="display: flex; justify-content: space-between; text-align: center; padding-right: 20px;">
+    <div>A-87, Okhla Industrial Area Phase-2 | New Delhi 110020</div>
+    <div><a href="https://clean-hedge.com/" style="color: white; text-decoration: none;">www.clean-hedge.com</a></div>
+</div>
+</footer>
+    {% endif %}
+    {% if purchaser == 3 %}
+    <footer style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: 17px; padding: 10px; background-color: #399b92;">
+{% comment %} <p style="display: block; margin: 0; padding: 0;">Division Of : ORNATE AGENCEIS PVT LTD</p> {% endcomment %}
+<div style="display: flex; justify-content: space-between; text-align: center; padding-right: 20px;">
+    <div>Division Of : SG ORNATE SOLAR SOLUTIONS PRIVATE LIMITED</div>
+    <div>011-43536666</div>
+</div>
+<div style="display: flex; justify-content: space-between; text-align: center; padding-right: 20px;">
+    <div>A-87, Phase-2, New Delhi 110020</div>
+    <div><a href="https://ornateinroof.com/" style="color: white; text-decoration: none;">www.ornateinroof.com</a></div>
+</div>
+</footer>
+    {% endif %}
+        
+    
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            @page{
+                margin: 0px
+            }
+            body{
+                font-size: 12px;
+            }
+            table,
+            th,
+            td {
+                border: 1px solid lightgrey;
+                border-collapse: collapse;
+                padding: 5px;
+                padding-left: 10px;
+            }
+            th {
+                text-align: left;
+                padding-left: 10px;
+            }
+            footer {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background-color: #fd6348;
+                padding: 10px;
+                color: white;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div style="margin: 30px">
+            <div style="display: flex;  justify-content: center; align-items: center; margin-top: 20px;">
+                <img src="https://siab-prod-t.s3.ap-south-1.amazonaws.com/Essential/logo.png" alt="" style="display: inline-block; width: 140px; height: 50px;">
+                {% comment %} <p style="margin: 0 auto; font-size: 27px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; color: #fd6348;">Purchase Order</p> {% endcomment %}
+            </div>
+
+            <div style="background-color: #FFF5EE; padding: 10px;">
+            <table style="width: 100%; border: 2px solid grey; margin-top: 20px; background-color: white;">
+                <tr>
+                    <th  colspan="4" style="text-align: center;">
+                        NOTE FOR PAYMENT APPROVAL
+                    </th> 
+                </tr>
+                <tr>
+                    <th  colspan="2">
+                        Nopa No:- {{nopa_no}}
+                    </th> 
+                    <th  colspan="2">
+                        Nopa Date:- {{date}}
+                    </th> 
+                </tr>
+                <tr>
+                    <th colspan="2" style="text-align: center;">Customer Resale Detail</th>
+ 
+                    <th style="text-align: center;"  colspan="2">
+                       Purchase Order Details
+                    </th> 
+                </tr>
+                <tr>
+                    <th>Customer Name</th>
+                    <td >{{resale_details.company_name}}</td>
+                    <th>
+                        PO No:
+                    </th> 
+                    <td>
+                       {{po_no}}
+                    </td> 
+                </tr>
+                <tr>
+                    <th>Customer GST</th>
+                    <td >{{resale_details.company_gst}}</td>
+                    <th>
+                        PO Date:
+                    </th> 
+                    <td>
+                       {{po_date}}
+                    </td> 
+                </tr>
+                <tr>
+                    <th>Customer Billing Address</th>
+                    <td>{{resale_details.company_address}} {{resale_details.company_city}}</td>
+                    <th>
+                        PO Made By:
+                    </th> 
+                    <td>
+                       {{po_made_by}}
+                    </td> 
+                </tr>
+
+                <tr>
+                    <th>
+                     Customer Delivery Address:
+                    </th> 
+                    <td>
+                        {{resale_details.company_address}} {{resale_details.company_city}}
+                    </td> 
+                    <th>
+                        PO Approved By:
+                    </th> 
+                    <td>
+                       {{po_made_by}}
+                    </td> 
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <b>Ref Invoice/Pi No:</b>  {{pi_no}} 
+                    </td> 
+                </tr>
+
+                <tr>
+                    <td colspan="4" style="text-align: center;">
+                        <b>Item Description</b> 
+                    </td> 
+                </tr>
+                <tr>
+                    <th style="text-align: center;">s.no</th>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Total Amount</th>
+                </tr>
+                {% for item in item_list %}
+                <tr>
+                    <td style="text-align: center;">{{ forloop.counter }}</td>
+                    <td>{{ item.item }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.total_amount }}</td>
+                </tr>
+                {% endfor %}
+
+                <tr>
+                    <td colspan="2"></td>
+                    <td><b>Total Quantity</b></td>
+                    <td style="background-color: lightgrey; border-color: white;">{{ total_quantity }}</td>
+                </tr>
+                <tr>
+                    <th colspan="2" style="text-align: center;">Vendor Details</th>
+                    <td><b>Sub Total</b></td>
+                    <td style="background-color: lightgrey; border-color: white;">{{ subtotal }}</td>
+                </tr>
+                <tr>
+                    <th>Vendor Name</th>
+                    <td >{{supplier_name}}</td>
+                    <td><b>Tax Amount</b></td>
+                    <td style="background-color: lightgrey; border-color: white;">{{ tax_amount }}</td>
+                   
+                </tr>
+                <tr>
+                    <th>Vendor GST</th>
+                    <td>{{supplier_gst}}</td>
+                    <td><b>Total Amount</b></td>
+                    <td style="background-color: lightgrey; border-color: white;">{{ total_amount }}</td>
+                   
+                </tr>
+                <tr>
+                    <th>Payment to be Done By:-</th>
+                    <td>Ornate Agencies Pvt. Ltd.</td>
+                </tr>
+                <tr>
+                    <th>Payment to be done in A/C of</th>
+                    <td colspan="3">{{supplier_name}}</td>
+                </tr>
+                <tr>
+                    <th>Payment Terms:-</th>
+                    <td colspan="3">{{payment_terms}}</td>
+                </tr>
+              
+            </table>
+            <table style="width: 100%; border: 2px solid grey; margin-top: 0px; background-color: white; border-top: none;">
+                <tr>
+                    <th style="text-align: center;" colspan="7">For Resale</th>
+                </tr>
+                <tr>
+                    <th style="text-align: center;">Customer Total Payment</th>
+                    <th style="text-align: center;">Freight</th>
+                    <th style="text-align: center;" >Tax</th>
+                    <th style="text-align: center;" >Advance</th>
+                    <th style="text-align: center;">Amount Left</th>
+                    <th style="text-align: center;">Total Amount</th>
+                    <th style="text-align: center;">Profit</th>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">₹{{resale_details.amount_outstanding}}</td>
+                    <td style="text-align: center;">₹{{resale_details.freight}}</td>
+                    <td style="text-align: center;">₹{{tax_amount}}</td>
+                    <td style="text-align: center;">₹{{resale_details.total_amount_received}}</td>
+                    <td style="text-align: center;">₹{{resale_details.total_amount_to_be_paid}}</td>
+                    <td style="text-align: center;">₹{{resale_details.total_amount}}</td>
+                    <td style="text-align: center;">₹{{resale_details.profit}}({{resale_details.profit_percent}}%)</td>
+                </tr>
+                <tr>
+                    <th style="text-align: center;" colspan="7">Vendor Details</th>
+                </tr>
+                <tr>
+                    <th style="text-align: center;">Supplier Total Payment</th>
+                    <th style="text-align: center;">Freight</th>
+                    <th style="text-align: center;" >Tax</th>
+                    <th style="text-align: center;" >Advance</th>
+                    <th style="text-align: center;">Total</th>
+                    <th style="text-align: center;">Payment Mode</th>
+                    <th style="text-align: center;" >Advance Payment Date</th>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">₹{{total_amount}}</td>
+                    <td style="text-align: center;">₹{{freight}}</td>
+                    <td style="text-align: center;">₹{{tax_amount}}</td>
+                    <td style="text-align: center;">₹{{advance_paid}}</td>
+                    <td style="text-align: center;">₹{{total_amount}}</td>
+                    <td style="text-align: center;">{{payment_mode}}</td>
+                    <td style="text-align: center;">{{advance_date}}</td>
+                </tr>
+
+                <tr style="background-color: #fd6348; color: white;">
+                    <th style="text-align: center;" colspan="2">Amount to be paid on</th>
+                    <th style="text-align: center;" colspan="3">Amount Percent</th>
+                    <th style="text-align: center;" colspan="2">Total amount to be paid</th>
+                </tr>
+                <tr style="background-color: lightgrey;">
+                    <th style="text-align: center; border-color: white;" colspan="2">{{payment_date}}</th>
+                    <th style="text-align: center; border-color: white;" colspan="3">{{amount_percent_to_be_paid}}%</th>
+                    <th style="text-align: center; border-color: white;" colspan="2">₹{{total_amount_to_be_paid}}</th>
+                </tr>
+            </table> 
+        </table>
+            <table style="width: 100%; border: 2px solid grey; margin-top: 0px; background-color: white; border-top: none;">
+                <tr>
+                    <th style="text-align: center;" colspan="4">For Requisition</th>
+                    <th style="text-align: center;" colspan="2">For Accounts Department</th>
+                </tr>
+                <tr>
+                    <th style="text-align: center;">Prepared By:-</th>
+                    <th style="text-align: center;">Checked By:-</th>
+                    <th style="text-align: center;" >Reviewed By:-</th>
+                    <th style="text-align: center;">Approved By:-</th>
+                    <th style="text-align: center;">Checked By:-</th>
+                    <th style="text-align: center;" >Approved By:-</th>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">{{requisition_prepared_by}}</td>
+                    <td style="text-align: center;">{{requisition_checked_by}}</td>
+                    <td style="text-align: center;" >{{requisition_reviewed_by}}</td>
+                    <td style="text-align: center;">{{requisition_approved_by}}</td>
+                    <td style="text-align: center;">{{accounts_checked_by}}</td>
+                    <td style="text-align: center;" >{{accounts_approved_by}}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: center;">Remarks</th>
+                    <td colspan="5">{{remarks}}</td>
+                </tr>
+            </table>
+        </div>
+        </div>
+        <footer style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: 17px; padding: 10px;">
+            {% comment %} <p style="display: block; margin: 0; padding: 0;">Division Of : ORNATE AGENCEIS PVT LTD</p> {% endcomment %}
+            <div style="display: flex; justify-content: space-between; text-align: center; padding-right: 20px;">
+                <div>Division Of : ORNATE AGENCEIS PVT LTD</div>
+                <div>011-43536666</div>
+            </div>
+            <div style="display: flex; justify-content: space-between; text-align: center; padding-right: 20px;">
+                <div>A-87, Okhla Industrial Area Phase-2 | New Delhi 110020</div>
+                <div><a href="http://www.ornatesolar.com" style="color: white; text-decoration: none;">www.ornatesolar.com</a></div>
+            </div>
+        </footer>
+    </body>
+    </html>

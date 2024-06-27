@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            @page{
+                margin: 20px
+            }
+            body{
+                border: 2px solid gray;
+                font-size: 15px;
+            }
+            table,
+            th,
+            td {
+                border: 1px solid black;
+                border-collapse: collapse;
+                padding: 5px;
+                padding-left: 10px;
+            }
+            th {
+                text-align: left;
+                padding-left: 10px;
+            }
+            table{
+                width: 100%;
+            }
+        </style>
+    </head>
+
+    <body>       
+        <div style="margin: 10px">
+            <div style="display: flex;  align-items: center; margin-top: 20px;">
+                
+                {% if purchaser == 1 %}
+                <img src="https://siab-prod-t.s3.ap-south-1.amazonaws.com/Essential/logo.png" alt="" style="display: inline-block; width: 140px; height: 50px; margin-left: 20px;">
+                {% endif %}
+                
+                {% if purchaser == 2 %}
+                
+                <img src="https://i.ibb.co/gtYWByL/Clean-Hedge-logo-black.png" alt="" style="display: inline-block; width: 140px; height: 50px; margin-left: 20px;">
+                {% endif %}
+                {% if purchaser == 3 %}
+                <img src="https://i.ibb.co/swNhjmK/APL-LOGO-FILE-png-01.png" alt="" style="display: inline-block; width: 170px; height: 50px; margin-left: 20px;">
+                {% endif %}
+                    
+                    
+                <p style="margin: 0 auto; font-size: 27px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; color: #fd6348;">Procurement Request Form</p>
+            </div>
+
+            <table style="width: 100%; border: 2px solid grey; margin-top: 20px;">
+                <tr>
+                    <th colspan="5">RFQ NO.- {{refrence_number}}</th>
+                    {% comment %} <th colspan="3">Doc No.- {{document_number}}</th> {% endcomment %}
+                </tr>
+
+                <tr>
+                    <td style="font-weight: bold;">Request Date:-</td>
+                    <td>{{date}}</td>
+                    <th style="text-align: center;" colspan="3">Priority</th>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;">Request by:-</td>
+                    <td>{{requested_by}}</td>
+                    <td rowspan="4" colspan="3" style="text-align: center;">{{priority}}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;">Department:-</td>
+                    <td>{{department}}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;">Contact Number:-</td>
+                    <td>{{requested_by_contact}}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;">Email id:-</td>
+                    <td>{{requested_by_email}}</td>
+                </tr>
+
+                <tr>
+                    <td colspan="5"><b>Project:- </b>{{project_name}}</td>
+                </tr>
+                <tr>
+                    <td colspan="5"><b>Please describe how this procurement is connected to Project:- </b>{{description}}</td>
+                </tr>
+                <tr>
+                    <td><b>Material Category:-</b></td>
+                    <td colspan="4">{{material_category}}</td>
+                </tr>
+                </table>
+
+                <table>
+                <tr>
+                        <th>Sr. No.</th>
+                        <th>Item</th>
+                        <th colspan="2">Description</th>
+                        <th>purpose</th>
+                        <th>Unit Price</th>
+                        <th style="width: 10%;">Quantity</th>
+                       
+                </tr>
+
+                {% for item in item_list %}
+                    <tr>
+                    <td style="width: 10%;">{{ forloop.counter }}</td>
+                    <td style="width: 20%;">{{ item.item }}</td>
+                    <td colspan="2" style="width: 30%; word-wrap: break-word; overflow-wrap: break-word;">{{ item.item_description }}</td>
+                    <td style="width: 20%;">{{ item.purpose }}</td>
+                    <td style="width: 20%;">{{ item.unit_price }}</td>
+                    <td style="text-align: center; width: 10%;">
+                        {{ item.quantity }}
+                        {% if item.unit is not none %}
+                        {{ item.unit }}
+                    {% endif %}
+                    </td>
+                    
+                    </tr>
+                {% endfor %}
+                
+                {% comment %} <tr>
+                    <td colspan="6"><b>Attachments Available:-</b>{{is_attachments_available}}</td>
+                </tr> {% endcomment %}
+               
+            </table> 
+           {% if resale_details %}
+            <table>
+                <tr>
+                    <td colspan="7" style="text-align: center;"><b>Resale Details</b></td>   
+               </tr>
+                <tr style="font-size: 13px;">
+                        <th>Company Name</th>
+                        <th>Company Address</th>
+                        <th>Company Gst</th>
+                        <th>Company Resale Price</th>
+                        <th>Freight Gst</th>
+                        <th style="width: 10%;">Total Amount Received</th>
+                        <th>Amount Outstanding</th>
+                </tr>
+                    
+                    <tr style="font-size: 13px;">
+                    <td>{{ resale_details.company_name }}</td>
+                    <td>{{ resale_details.company_address }} {{ resale_details.company_city}}</td>
+                    <td>{{ resale_details.company_gst }}</td>
+                    <td>{{ resale_details.company_resale_price }}</td>
+                    <td>{{ resale_details.freight_gst }}</td>
+                    <td style="text-align: center;">{{ resale_details.total_amount_received }}</td>
+                    <td >{{ resale_details.amount_outstanding }}</td>
+                    </tr>
+            </table>
+            {% endif %}
+            <table>
+                <tr style="height: 120px;" VALIGN=TOP>
+                    <td style="vertical-align: top; text-align: center;"><b>Name & Signature of Requestee with date:<br> {{made_by}} <br> {{date}} </b> </td>
+                    <td style="vertical-align: top; text-align: center;"><b>Name & Signature of manager with date:<br> {{approved_by}} <br> {{approved_by_date}}</b></td>
+                    <td style="vertical-align: top; text-align: center;"><b>Name & Signature of senior manager with date:<br> {{approved_by_manager}} <br> {{approved_by_manager_date}}</b></td>
+                </tr>
+               
+            </table>
+    </div> 
+
+
+    </body>
+
+</html>

@@ -1,0 +1,33 @@
+# Ignore virtual environment files
+venv/
+*.pyc
+
+# Ignore Django migrations
+**/migrations/*.py
+**/migrations/*.pyc
+
+# Ignore local settings file
+**/local_settings.py
+
+# Ignore database file
+db.sqlite3
+
+# Ignore staticfiles directory
+staticfiles/
+
+# Ignore media files
+media/
+git
+
+#ignore make file
+Makefile
+
+#ignore environment files
+.env
+logs/
+
+# Celery-related
+celerybeat-schedule.dat
+celerybeat-schedule.bak
+celerybeat-schedule.dir
+.celery
